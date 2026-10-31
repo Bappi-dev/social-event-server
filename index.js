@@ -18,12 +18,19 @@ export async function connectToMongoDB() {
     console.dir(err);
   }
 } 
- await connectToMongoDB()
+ const socialClient = await connectToMongoDB()
+ const db = socialClient.db("social-event")
+ const socialEventCollection = db.collection("events")
 // mongodb end
 
 
+app.get('/all-events', async (req, res) => {
+        const result = await socialEventCollection.find().toArray()
+        res.send(result);
+})
 
 
+// http://localhost:5000/all-events
 app.get('/', (req, res) =>{
      res.send({msg:'server is running...bappi'})
 })
