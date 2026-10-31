@@ -41,6 +41,15 @@ app.get('/events/:id', async (req, res) =>{
      const result = await socialEventCollection.findOne({_id: new ObjectId(id)})
      res.send(result)
 })
+app.patch('/events/:id', async(req, res) =>{
+          const { id } = req.params;
+          const data = req.body
+          const result = await socialEventCollection.updateOne(
+            {_id: new ObjectId(id)},
+             { $set: data },
+        );
+        res.send(result)
+});
 
 // http://localhost:5000/events
 app.get('/', (req, res) =>{
