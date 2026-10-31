@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express from 'express';
 import { MongoClient } from 'mongodb';
 import 'dotenv/config'
@@ -5,6 +6,7 @@ import 'dotenv/config'
 const app = express()
 const PORT = 5000;
 
+app.use(cors())
 app.use(express.json())
 // mongodb start
 const client = new MongoClient(process.env.MONGODB_URI);
@@ -23,14 +25,19 @@ export async function connectToMongoDB() {
  const socialEventCollection = db.collection("events")
 // mongodb end
 
+app.post('/events', async (req, res) =>{
+       const data = req.body
+       const result = await socialEventCollection.insertOne(data)
+       res.send(result)
+})
 
-app.get('/all-events', async (req, res) => {
+app.get('/events', async (req, res) => {
         const result = await socialEventCollection.find().toArray()
         res.send(result);
 })
 
 
-// http://localhost:5000/all-events
+// http://localhost:5000/events
 app.get('/', (req, res) =>{
      res.send({msg:'server is running...bappi'})
 })
