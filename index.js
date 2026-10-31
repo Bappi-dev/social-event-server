@@ -1,6 +1,6 @@
 import cors from 'cors';
 import express from 'express';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import 'dotenv/config'
 
 const app = express()
@@ -36,6 +36,11 @@ app.get('/events', async (req, res) => {
         res.send(result);
 })
 
+app.get('/events/:id', async (req, res) =>{
+     const {id} = req.params
+     const result = await socialEventCollection.findOne({_id: new ObjectId(id)})
+     res.send(result)
+})
 
 // http://localhost:5000/events
 app.get('/', (req, res) =>{
