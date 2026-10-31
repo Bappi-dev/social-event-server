@@ -43,13 +43,19 @@ app.get('/events/:id', async (req, res) =>{
 })
 app.patch('/events/:id', async(req, res) =>{
           const { id } = req.params;
-          const data = req.body
+          const data = req.body;
           const result = await socialEventCollection.updateOne(
             {_id: new ObjectId(id)},
              { $set: data },
         );
         res.send(result)
 });
+
+app.delete('/events/:id', async (req, res) =>{
+         const {id} = req.params;
+         const result = await socialEventCollection.deleteOne({_id: new ObjectId(id)})
+         res.send(result)
+})
 
 // http://localhost:5000/events
 app.get('/', (req, res) =>{
