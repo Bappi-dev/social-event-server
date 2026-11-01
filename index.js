@@ -36,12 +36,15 @@ app.get('/events', async (req, res) => {
         const result = await socialEventCollection.find().toArray()
         res.send(result);
 })
+
+
+
 app.get('/resent-events', async(req, res) =>{
       const result = await socialEventCollection.find().sort({ _id: -1 }).limit(6).toArray()
       res.send(result)
 })
 
-app.get('/events/:id', async (req, res) =>{
+app.get('/allevents/:id', async (req, res) =>{
      const {id} = req.params
      const result = await socialEventCollection.findOne({_id: new ObjectId(id)})
      res.send(result)
@@ -55,6 +58,11 @@ app.patch('/events/:id', async(req, res) =>{
         );
         res.send(result)
 });
+app.get('/events/:email', async(req, res) =>{
+      const {email} = req.params;
+      const result = await socialEventCollection.find({email:email}).toArray()
+      res.send(result)
+})
 
 app.delete('/events/:id', async (req, res) =>{
          const {id} = req.params;
@@ -67,10 +75,20 @@ app.post('/events-join', async(req, res) =>{
        const result = await joinedEventCollection.insertOne(data);
        res.send(result)
 })
+
 app.get('/events-join', async(req, res) =>{
      const result = await joinedEventCollection.find().toArray()
      res.send(result)
 })
+
+app.delete('/events-join/:id', async (req, res) =>{
+       const {id} =  req.params;
+       const result = await joinedEventCollection.deleteOne({_id: new ObjectId(id)})
+       res.send(result)
+})
+
+
+
 
 // http://localhost:5000/events-join
 app.get('/', (req, res) =>{
