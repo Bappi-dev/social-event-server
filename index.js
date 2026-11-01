@@ -23,6 +23,7 @@ export async function connectToMongoDB() {
  const socialClient = await connectToMongoDB()
  const db = socialClient.db("social-event")
  const socialEventCollection = db.collection("events")
+ const joinedEventCollection = db.collection("join-events")
 // mongodb end
 
 app.post('/events', async (req, res) =>{
@@ -55,9 +56,19 @@ app.delete('/events/:id', async (req, res) =>{
          const {id} = req.params;
          const result = await socialEventCollection.deleteOne({_id: new ObjectId(id)})
          res.send(result)
+});
+
+app.post('/events-join', async(req, res) =>{
+       const data = req.body;
+       const result = await joinedEventCollection.insertOne(data);
+       res.send(result)
+})
+app.get('/events-join', async(req, res) =>{
+     const result = await joinedEventCollection.find().toArray()
+     res.send(result)
 })
 
-// http://localhost:5000/events
+// http://localhost:5000/events-join
 app.get('/', (req, res) =>{
      res.send({msg:'server is running...bappi'})
 })
