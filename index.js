@@ -36,6 +36,10 @@ app.get('/events', async (req, res) => {
         const result = await socialEventCollection.find().toArray()
         res.send(result);
 })
+app.get('/resent-events', async(req, res) =>{
+      const result = await socialEventCollection.find().sort({ _id: -1 }).limit(6).toArray()
+      res.send(result)
+})
 
 app.get('/events/:id', async (req, res) =>{
      const {id} = req.params
