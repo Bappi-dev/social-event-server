@@ -36,7 +36,7 @@ const EventVerifyToken = async (req, res, next) =>{
     return res.status(401).send({ msg: "Unauthorized!" });
   }
   const token = authHeader.split(" ")[1]
-  console.log(token);
+
 
   const JWKS = createRemoteJWKSet(new URL(`${process.env.CLIENT_URL}/api/auth/jwks`))
   
@@ -66,7 +66,7 @@ app.get("/events",  async (req, res) => {
   res.send(result);
 });
 
-app.get("/resent-events", EventVerifyToken, async (req, res) => {
+app.get("/resent-events",  async (req, res) => {
   const result = await socialEventCollection
     .find()
     .sort({ _id: -1 })
@@ -130,3 +130,5 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
 });
+
+export default app
